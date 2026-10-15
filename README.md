@@ -1,12 +1,14 @@
 # Data-Science-Tool-Mastery
 
-A practical Data Science project demonstrating SQL analytics, DuckDB, Python, and reproducible data analysis using a real-world-style e-commerce dataset.
+A practical Data Science project demonstrating SQL analytics, DuckDB, Python, interactive data analysis, visualization, and reproducible analytical workflows using a synthetic e-commerce dataset.
 
 ## Overview
 
-This project explores an e-commerce dataset using SQL and Python to develop practical data analysis skills. It focuses on relational data, join cardinality, payment analysis, order-level metrics, and data-quality investigation.
+This project explores an e-commerce dataset using SQL and Python to develop practical data analysis skills.
 
-The project emphasizes reproducible analytical workflows and careful interpretation of results.
+It covers relational data, join cardinality, payment analysis, order-level metrics, data-quality investigation, customer demographics, product pricing, and data visualization.
+
+The project emphasizes reproducible analytical workflows, data integrity, and careful interpretation of results.
 
 ## Tech Stack
 
@@ -14,6 +16,9 @@ The project emphasizes reproducible analytical workflows and careful interpretat
 - DuckDB
 - SQL
 - Pandas
+- Matplotlib
+- Seaborn
+- Jupyter Notebook
 - Parquet
 - Git and GitHub
 
@@ -31,9 +36,11 @@ The dataset contains seven Parquet files representing the following tables:
 | `payments` | Payment records |
 | `returns` | Product return records |
 
-The dataset contains approximately 431,000 rows across these seven tables.
+The dataset contains 431,024 rows across these seven tables.
 
 The dataset files are stored locally in the `data/` directory and excluded from Git version control.
+
+The dataset is synthetic and is used for analytical practice.
 
 ## Project Work
 
@@ -87,18 +94,67 @@ Further payment analysis found that all captured and failed payment records asso
 
 These observations identify a potential data-quality concern. They do not establish why the item records are missing or whether the records are invalid.
 
+### 6. Customer Analysis and Visualization
+
+Analyzed customer geography, loyalty tiers, marketing preferences, and signup trends using DuckDB, Pandas, Matplotlib, and Seaborn.
+
+Key findings:
+
+- The dataset contains **12,000 customers across 17 countries**.
+- The United States has the largest customer base, with **2,075 customers (17.29%)**.
+- **5,296 customers (44.13%)** have no recorded loyalty tier.
+- Bronze is the most common recorded loyalty tier, with **4,023 customers**.
+- **7,489 customers (62.41%)** opted in to marketing communications.
+- Customer signups totalled 4,022 in 2023, 4,059 in 2024, and 3,919 in 2025.
+- November and December consistently recorded higher signup counts than most other months across the three years examined.
+
+The repeated year-end signup increases suggest a possible seasonal pattern, but the analysis does not establish their cause.
+
+### 7. Product Analysis and Visualization
+
+Analyzed product categories, listed prices, unit costs, unit margins, and recorded discontinuation dates.
+
+Key findings:
+
+- The catalog contains **2,000 products across 24 categories**.
+- All 24 categories contain at least one product.
+- Garden Tools has the largest catalog, with **102 products**.
+- Sprinklers has the highest average listed product price, at **38.26**.
+- Sprinklers also has the highest average unit margin, at **16.04**.
+- The Classic Terracotta Sprinkler has a unit margin of **114.95**.
+- Product prices show a right-skewed distribution, with most products concentrated in lower price ranges.
+- **153 products (7.65%)** have a recorded discontinuation date.
+
+Unit margin is calculated as listed unit price minus unit cost. It does not represent total profit or realized profitability.
+
+## Interactive Analysis Notebook
+
+The customer and product analyses are documented in:
+
+`notebooks/ecommerce_customer_product_analysis.ipynb`
+
+The notebook uses DuckDB to query the Parquet data and Pandas, Matplotlib, and Seaborn to analyze and visualize the results.
+
+It includes data previews, missing-value checks, SQL aggregations, summary tables, visualizations, and analytical findings.
+
 ## Project Structure
 
 ```text
 Data-Science-Tool-Mastery/
-├── data/                         # Local dataset; excluded from Git
+├── data/                                  # Local dataset; excluded from Git
 ├── sql/
 │   └── ecommerce_orders.schema.sql
+├── notebooks/
+│   └── ecommerce_customer_product_analysis.ipynb
 ├── analyze_join_cardinality.py
 ├── analyze_join_impact.py
 ├── analyze_orders_without_items.py
 ├── analyze_payment_status.py
 ├── build_order_analytics.py
+├── build_order_payment_summary.py
+├── investigate_missing_items_amounts.py
+├── investigate_missing_items_financial_impact.py
+├── investigate_order_status_distribution.py
 ├── validate_foreign_keys.py
 ├── README.md
 ├── LICENSE
@@ -112,16 +168,19 @@ Data-Science-Tool-Mastery/
 - Python
 - DuckDB
 - Pandas
+- Matplotlib
+- Seaborn
+- JupyterLab
 
 ### Install Dependencies
 
 Activate your Python environment and install the required packages:
 
 ```bash
-pip install duckdb pandas
+python -m pip install duckdb pandas matplotlib seaborn jupyterlab
 ```
 
-### Run an Analysis
+### Run a Python Analysis Script
 
 From the project root, execute a script:
 
@@ -131,7 +190,19 @@ python analyze_join_cardinality.py
 
 Other analysis scripts can be run similarly.
 
-**Note:** The local dataset must be available in the expected `data/` directory.
+### Run the Interactive Notebook
+
+Launch JupyterLab:
+
+```bash
+python -m jupyter lab
+```
+
+Open `notebooks/ecommerce_customer_product_analysis.ipynb` and run the notebook cells from top to bottom.
+
+### Dataset Requirement
+
+The Parquet files must be available locally in the expected `data/` directory. The dataset is excluded from Git version control, so it must be obtained separately before running the analyses.
 
 ## Important Analytical Considerations
 
@@ -140,6 +211,10 @@ Other analysis scripts can be run similarly.
 - A captured payment status does not necessarily imply a positive payment amount.
 - Captured payment amounts should not automatically be interpreted as recognized revenue.
 - Missing item records require further investigation before being classified as invalid data.
+- Missing loyalty tiers may affect conclusions about loyalty-program membership.
+- Customer signup patterns do not establish the causes of year-end increases.
+- Product-level margins do not account for sales volume, discounts, returns, shipping, or operating expenses.
+- Missing discontinuation dates do not definitively establish that products remain available for sale.
 
 ## License
 
